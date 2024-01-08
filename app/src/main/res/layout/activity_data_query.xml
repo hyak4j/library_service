@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical"
+    tools:context=".activities.DataQueryActivity">
+
+    <TextView
+        android:textSize="40sp"
+        android:textAlignment="center"
+        android:textColor="@color/color_btn_query_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_query"/>
+
+    <EditText
+        android:id="@+id/edt_data_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:hint="@string/txt_data_id"/>
+    
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/color_btn_query_data"
+        android:text="@string/txt_search"
+        android:textSize="30sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/black"/>
+
+    <Button
+        android:id="@+id/btn_find_user"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/color_btn_register_user"
+        android:text="@string/txt_find_all_users"
+        android:textSize="30sp"/>
+
+    <Button
+        android:id="@+id/btn_find_book"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/color_btn_register_book"
+        android:text="@string/txt_find_all_books"
+        android:textSize="30sp"/>
+
+    <TextView
+        android:id="@+id/txt_data_query_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:text=""/>
+</LinearLayout>

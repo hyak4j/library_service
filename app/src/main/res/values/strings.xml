@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">LibraryService</string>
+    <string name="txt_query">Data Query</string>
+    <string name="txt_user_book_query">User / Book Data Query</string>
+    <string name="txt_data_id">Data ID</string>
+    <string name="txt_search">SEARCH</string>
+    <string name="txt_find_all_users">FIND ALL USERS</string>
+    <string name="txt_find_all_books">FIND ALL BOOKS</string>
+    <string name="txt_borrow_return">Borrow/Return Form</string>
+    <string name="txt_borrow_return_book">Borrow / Return Book</string>
+    <string name="txt_book_isbn">Book ISBN</string>
+    <string name="txt_book_name">Book Name</string>
+    <string name="txt_user_id">User ID"</string>
+    <string name="txt_user_name">User Name"</string>
+    <string name="txt_borrow">BORROW"</string>
+    <string name="txt_return">RETURN"</string>
+    <string name="txt_submit">SUBMIT"</string>
+    <string name="txt_register_book">Register New Book"</string>
+    <string name="txt_register_user">Register New User"</string>
 </resources>

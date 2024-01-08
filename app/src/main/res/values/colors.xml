@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="color_btn_register_book">#1B71A5</color>
+    <color name="color_btn_register_user">#2FB891</color>
+    <color name="color_btn_borrow_return">#822FAF</color>
+    <color name="color_btn_query_data">#EC4063</color>
 </resources>
