@@ -28,6 +28,40 @@ class DataQueryActivity : AppCompatActivity() {
         btnAllBooks = binding.btnFindBook
         txtResult = binding.txtDataQueryResult
 
+        // 查詢所有已註冊讀者
+        btnAllUsers.setOnClickListener {
+            singleThreadExecutor.execute {
+                val db = AppDatabase.buildAppDatabase(this)
+                val userDao = db.getUserDao()
+                val bookDao = db.getBookDao()
+                var resultText = ""
+                for (user in userDao.getAllUsers()) {
+                    resultText += "User name is ${user.name}\n"
+                    resultText += "User ID is ${user.id}\n"
+                    resultText += "User is now borrowing: \n"
+                    var isBorrowingBooks = false
+                    val bookBorrowing = arrayOf(user.bookBorrowing1, user.bookBorrowing2, user.bookBorrowing3,
+                                                user.bookBorrowing4, user.bookBorrowing5)
+                    for (i in bookBorrowing.indices) {
+                        // 確認讀者有無借閱中的書籍，每人最多5本
+                        if (bookBorrowing[i] != null) {
+                            isBorrowingBooks = true
+                            val bookFound = bookDao.getBookByISBN(bookBorrowing[i]!!)
+                            resultText += "${bookFound.isbn} ${bookFound.bookName}\n"
+                        }
+                    }
+                    if (!isBorrowingBooks) {
+                        resultText += "none \n"
+                    }
+                    resultText += "================\n"
+                }
+                runOnUiThread {
+                    txtResult.text = resultText
+                }
+            }
+        }
+
+        // 查詢所有已註冊書籍
         btnAllBooks.setOnClickListener {
             singleThreadExecutor.execute {
                 val db = AppDatabase.buildAppDatabase(this)
