@@ -86,6 +86,19 @@ class BorrowReturnActivity : AppCompatActivity() {
                         return@execute
                     }
 
+                    if (user.bookBorrowing1 == null) {
+                        userDao.updateUser(
+                            User(
+                                user.id,
+                                user.name,
+                                isbn,
+                                user.bookBorrowing2,
+                                user.bookBorrowing3,
+                                user.bookBorrowing4,
+                                user.bookBorrowing5
+                            )
+                        )
+                    }
                     if (user.bookBorrowing2 == null) {
                         userDao.updateUser(
                             User(
@@ -138,12 +151,75 @@ class BorrowReturnActivity : AppCompatActivity() {
                             )
                         )
                     }
-                    if (user.bookBorrowing1 == null) {
+
+                    bookDao.updateOneBook(Book(book.isbn, book.bookName, user.id))
+                    runOnUiThread {
+                        txtResult.text = "Borrow Success!"
+                        edtISBN.setText("")
+                        edtUserID.setText("")
+                    }
+                } catch (e: Exception) {
+                    runOnUiThread {
+                        txtResult.text = e.message
+                    }
+                }
+            }
+        }
+
+        btnReturn.setOnClickListener {
+            val isbn = edtISBN.text.toString()
+            val userId = edtUserID.text.toString()
+            if (!IsbnUtil.checkISBN(isbn, this)) {
+                return@setOnClickListener
+            }
+            if (!UserIdUtil.checkUserID(userId, this)) {
+                return@setOnClickListener
+            }
+
+            singleThreadExecutor.execute {
+                try {
+                    // 找讀者
+                    val db = AppDatabase.buildAppDatabase(this)
+                    val userDao = db.getUserDao()
+                    val user = userDao.getUserById(userId)
+                    if (user == null) {
+                        //查無讀者
+                        runOnUiThread {
+                            txtResult.text = "Return failed. User not found"
+                        }
+                        return@execute
+                    }
+
+                    val bookDao = db.getBookDao()
+                    val book = bookDao.getBookByISBN(isbn)
+                    if (book == null) {
+                        //查無書籍
+                        runOnUiThread {
+                            txtResult.text = "Return failed. Book not found"
+                        }
+                        return@execute
+                    }
+
+                    if (user.bookBorrowing1 != isbn &&
+                        user.bookBorrowing2 != isbn &&
+                        user.bookBorrowing3 != isbn &&
+                        user.bookBorrowing4 != isbn &&
+                        user.bookBorrowing5 != isbn
+                    ) {
+                        //已借閱5本書
+                        runOnUiThread {
+                            txtResult.text = "Return failed. User didn`t borrow this book"
+                        }
+                        return@execute
+                    }
+
+
+                    if (user.bookBorrowing1 == isbn) {
                         userDao.updateUser(
                             User(
                                 user.id,
                                 user.name,
-                                isbn,
+                                null,
                                 user.bookBorrowing2,
                                 user.bookBorrowing3,
                                 user.bookBorrowing4,
@@ -151,9 +227,62 @@ class BorrowReturnActivity : AppCompatActivity() {
                             )
                         )
                     }
-                    bookDao.updateOneBook(Book(book.isbn, book.bookName, user.id))
+                    if (user.bookBorrowing2 == isbn) {
+                        userDao.updateUser(
+                            User(
+                                user.id,
+                                user.name,
+                                user.bookBorrowing1,
+                                null,
+                                user.bookBorrowing3,
+                                user.bookBorrowing4,
+                                user.bookBorrowing5
+                            )
+                        )
+                    }
+                    if (user.bookBorrowing3 == isbn) {
+                        userDao.updateUser(
+                            User(
+                                user.id,
+                                user.name,
+                                user.bookBorrowing1,
+                                user.bookBorrowing2,
+                                null,
+                                user.bookBorrowing4,
+                                user.bookBorrowing5
+                            )
+                        )
+                    }
+                    if (user.bookBorrowing4 == isbn) {
+                        userDao.updateUser(
+                            User(
+                                user.id,
+                                user.name,
+                                user.bookBorrowing1,
+                                user.bookBorrowing2,
+                                user.bookBorrowing3,
+                                null,
+                                user.bookBorrowing5
+                            )
+                        )
+                    }
+                    if (user.bookBorrowing5 == isbn) {
+                        userDao.updateUser(
+                            User(
+                                user.id,
+                                user.name,
+                                user.bookBorrowing1,
+                                user.bookBorrowing2,
+                                user.bookBorrowing3,
+                                user.bookBorrowing4,
+                                null
+                            )
+                        )
+                    }
+
+                    bookDao.updateOneBook(Book(book.isbn, book.bookName, null))
                     runOnUiThread {
-                        txtResult.text = "Borrow Success!"
+                        txtResult.text = "Return Success!"
                         edtISBN.setText("")
                         edtUserID.setText("")
                     }
