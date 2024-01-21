@@ -20,6 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30sp"
+        android:inputType="text"
+        android:autofillHints="name"
         android:hint="@string/txt_data_id"/>
     
     <Button
@@ -56,13 +58,19 @@
         android:text="@string/txt_find_all_books"
         android:textSize="30sp"/>
 
-    <TextView
-        android:id="@+id/txt_data_query_result"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:text=""/>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txt_data_query_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:text=""/>
+    </ScrollView>
+
 </LinearLayout>
