@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.hyak4j.libraryservice.databinding.ActivityBookRegisterBinding
 import com.hyak4j.libraryservice.db.AppDatabase
 import com.hyak4j.libraryservice.db.Book
+import com.hyak4j.libraryservice.util.IsbnUtil
 import java.util.concurrent.Executors
 
 class BookRegisterActivity : AppCompatActivity() {
@@ -50,35 +51,10 @@ class BookRegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (edtBookISBN.text.toString() == "") {
-                val alertDialog = AlertDialog.Builder(this)
-                alertDialog.setTitle("ISBN Error")
-                alertDialog.setMessage("The book ISBN cannot be empty.")
-                alertDialog.setCancelable(false)
-                alertDialog.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-                alertDialog.create().show()
+            if (!IsbnUtil.checkISBN(edtBookISBN.text.toString(), this)) {
                 return@setOnClickListener
             }
 
-            if (edtBookISBN.text.length != 10) {
-                val alertDialog = AlertDialog.Builder(this)
-                alertDialog.setTitle("ISBN Error")
-                alertDialog.setMessage("The book ISBN length must be 10 digits long.")
-                alertDialog.setCancelable(false)
-                alertDialog.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-                alertDialog.create().show()
-                return@setOnClickListener
-            }
-
-            if (!isbnValidation(edtBookISBN.text.toString())) {
-                val alertDialog = AlertDialog.Builder(this)
-                alertDialog.setTitle("ISBN Error")
-                alertDialog.setMessage("The book ISBN is not valid.")
-                alertDialog.setCancelable(false)
-                alertDialog.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-                alertDialog.create().show()
-                return@setOnClickListener
-            }
 
             singleThreadExecutor.execute {
                 // 通過檢查 => 儲存書籍資料
@@ -99,22 +75,5 @@ class BookRegisterActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun isbnValidation(isbn: String): Boolean {
-        // 驗證isbn是否正確
-        var sum = 0
-        for (i in 0 until isbn.length - 1) {
-            // 將各項char轉int * 位於第幾碼後加總 (不含第10碼檢查碼)
-            sum += (isbn[i] - '0') * (i + 1)
-        }
-        val checkDigit = sum % 11
-        // 最後一碼為檢查碼
-        val checkDigitProvided = isbn[isbn.length - 1]
-        val checkDigitProvidedToInt = if (checkDigitProvided == 'X') 10
-        else {
-            checkDigitProvided - '0'
-        }
-        return checkDigit == checkDigitProvidedToInt
     }
 }
